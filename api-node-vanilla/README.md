@@ -3,7 +3,7 @@
 This is our step-to-step process:
 
 - [x] 1. Create the server
-- [ ] 2. Sketch the endpoints
+- [x] 2. Sketch the endpoints
 - [ ] 3. Define the logic for the GET method
 - [ ] 4. Define the logic for the POST method
 - [ ] 5. Define the logic for the PUT method
