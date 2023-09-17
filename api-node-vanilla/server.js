@@ -74,7 +74,25 @@ const server = http.createServer((request, response) => {
     // edit user
 
     else if (request.url.match(/\/users\/([0-9]+)/) && request.method === "PUT") {
-        response.end("This is the response against the PUT request.")
+        try {
+            const id = request.url.split('/')[2];
+            let body = "";
+    
+            request.on("data", (data) => {
+                body = data.toString();
+            })
+            request.on('end', () => {
+                const updatedUser = JSON.parse(body);
+                let userIndex = users.findIndex((user) => user.id === parseInt(id));
+                users[userIndex] = { ...updatedUser };
+    
+                response.writeHead(200, { 'Content-Type': 'application/json' });
+                response.end(JSON.stringify(users));
+            });
+        } catch (error) {
+            response.writeHead(400, { 'Content-Type': 'application/json' });
+            response.end(JSON.stringify({ message: error.message }));
+        }
     }
 
     // delete user
