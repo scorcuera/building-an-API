@@ -38,13 +38,37 @@ const server = http.createServer((request, response) => {
     // get one single user
 
     else if (request.url.match(/\/users\/([0-9]+)/) && request.method === "GET") {
-        response.end("This is the response against the GET request.")
+        try {
+            let userId = request.url.split('/')[2];
+            let user = users.find(user => user.id === parseInt(userId));
+            response.writeHead(200, { 'Content-Type': 'application/json' });
+            response.end(JSON.stringify(user))
+        } catch (error) {
+            response.writeHead(400, { 'Content-Type': 'application/json' });
+            response.end(JSON.stringify({ message: error.message }));
+        }
     }
 
     // create new user
 
     else if (request.url === "/users" && request.method === "POST") {
-        response.end("This is the response against the POST request.")
+        try {
+            let body = ""
+            request.on("data", (data) => {
+                body += data.toString();
+            })
+            request.on('end', () => {
+                const newUser = JSON.parse(body);
+                newUser.id = Math.max(...users.map((user) => user.id), 0) + 1;
+                users.push(newUser);
+
+                response.writeHead(201, { 'Content-Type': 'application/json' });
+                response.end(JSON.stringify(newUser));
+            });
+        } catch (error) {
+            response.writeHead(400, { 'Content-Type': 'application/json' });
+            response.end(JSON.stringify({ message: error.message }));
+        }
     }
 
     // edit user
