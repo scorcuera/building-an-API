@@ -1,5 +1,25 @@
 import http from 'http';
 
+// define our data
+
+let users = [
+    {
+        "id": 1,
+        "user_name": "Lola",
+        "user_email": "lola@factoriaf5.org"
+    },
+    {
+        "id": 2,
+        "user_name": "Celia",
+        "user_email": "celia@factoriaf5.org"
+    },
+    {
+        "id": 3,
+        "user_name": "Jorge",
+        "user_email": "jorge@factoriaf5.org"
+    }
+]
+
 // PORT
 
 const PORT = 3000;
@@ -11,13 +31,22 @@ const server = http.createServer((request, response) => {
     // get all users
 
     if (request.url === "/users" && request.method === "GET") {
-        response.end("This is the response against the GET request.")
+        response.writeHead(200, { 'Content-Type': 'application/json' });
+        response.end(JSON.stringify(users));
     }
 
     // get one single user
 
     else if (request.url.match(/\/users\/([0-9]+)/) && request.method === "GET") {
-        response.end("This is the response against the GET request.")
+        try {
+            let userId = request.url.split('/')[2];
+            let user = users.find(user => user.id === parseInt(userId));
+            response.writeHead(200, { 'Content-Type': 'application/json' });
+            response.end(JSON.stringify(user))
+        } catch (error) {
+            response.writeHead(400, { 'Content-Type': 'application/json' });
+            response.end(JSON.stringify({ message: error.message }));
+        }
     }
 
     // create new user
