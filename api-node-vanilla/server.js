@@ -77,7 +77,7 @@ const server = http.createServer((request, response) => {
         try {
             const id = request.url.split('/')[2];
             let body = "";
-    
+
             request.on("data", (data) => {
                 body = data.toString();
             })
@@ -85,7 +85,7 @@ const server = http.createServer((request, response) => {
                 const updatedUser = JSON.parse(body);
                 let userIndex = users.findIndex((user) => user.id === parseInt(id));
                 users[userIndex] = { ...updatedUser };
-    
+
                 response.writeHead(200, { 'Content-Type': 'application/json' });
                 response.end(JSON.stringify(users));
             });
@@ -98,7 +98,20 @@ const server = http.createServer((request, response) => {
     // delete user
 
     else if (request.url.match(/\/users\/([0-9]+)/) && request.method === "DELETE") {
-        response.end("This is the response against the DELETE request.")
+        try {
+            let userId = request.url.split('/')[2];
+            const userIndex = users.findIndex(user => user.id === parseInt(userId));
+
+            if (userIndex !== -1) {
+                users.splice(userIndex, 1);
+
+                response.writeHead(204, { 'Content-Type': 'application/json' });
+                response.end();
+            }
+        } catch (error) {
+            response.writeHead(400, { 'Content-Type': 'application/json' });
+            response.end(JSON.stringify({ message: error.message }));
+        }
     }
 
     else {
