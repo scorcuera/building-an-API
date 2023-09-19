@@ -1,24 +1,14 @@
 import http from 'http';
 
-// define our data
+// import our data
 
-let users = [
-    {
-        "id": 1,
-        "user_name": "Lola",
-        "user_email": "lola@factoriaf5.org"
-    },
-    {
-        "id": 2,
-        "user_name": "Celia",
-        "user_email": "celia@factoriaf5.org"
-    },
-    {
-        "id": 3,
-        "user_name": "Jorge",
-        "user_email": "jorge@factoriaf5.org"
-    }
-]
+// import data from "./data/data.json" assert { type: 'json'}; // deprecated
+// import data from "./data/data.json" with {type: 'json'} // not yet available
+
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const data = require("./data/data.json");
+
 
 // PORT
 
@@ -32,7 +22,7 @@ const server = http.createServer((request, response) => {
 
     if (request.url === "/users" && request.method === "GET") {
         response.writeHead(200, { 'Content-Type': 'application/json' });
-        response.end(JSON.stringify(users));
+        response.end(JSON.stringify(data.users));
     }
 
     // get one single user
@@ -40,7 +30,7 @@ const server = http.createServer((request, response) => {
     else if (request.url.match(/\/users\/([0-9]+)/) && request.method === "GET") {
         try {
             let userId = request.url.split('/')[2];
-            let user = users.find(user => user.id === parseInt(userId));
+            let user = data.users.find(user => user.id === parseInt(userId));
             response.writeHead(200, { 'Content-Type': 'application/json' });
             response.end(JSON.stringify(user))
         } catch (error) {
@@ -59,8 +49,8 @@ const server = http.createServer((request, response) => {
             })
             request.on('end', () => {
                 const newUser = JSON.parse(body);
-                newUser.id = Math.max(...users.map((user) => user.id), 0) + 1;
-                users.push(newUser);
+                newUser.id = Math.max(...data.users.map((user) => user.id), 0) + 1;
+                data.users.push(newUser);
 
                 response.writeHead(201, { 'Content-Type': 'application/json' });
                 response.end(JSON.stringify(newUser));
@@ -83,11 +73,11 @@ const server = http.createServer((request, response) => {
             })
             request.on('end', () => {
                 const updatedUser = JSON.parse(body);
-                let userIndex = users.findIndex((user) => user.id === parseInt(id));
-                users[userIndex] = { ...updatedUser };
+                let userIndex = data.users.findIndex((user) => user.id === parseInt(id));
+                data.users[userIndex] = { ...updatedUser };
 
                 response.writeHead(200, { 'Content-Type': 'application/json' });
-                response.end(JSON.stringify(users));
+                response.end(JSON.stringify(data.users));
             });
         } catch (error) {
             response.writeHead(400, { 'Content-Type': 'application/json' });
@@ -100,10 +90,10 @@ const server = http.createServer((request, response) => {
     else if (request.url.match(/\/users\/([0-9]+)/) && request.method === "DELETE") {
         try {
             let userId = request.url.split('/')[2];
-            const userIndex = users.findIndex(user => user.id === parseInt(userId));
+            const userIndex = data.users.findIndex(user => user.id === parseInt(userId));
 
             if (userIndex !== -1) {
-                users.splice(userIndex, 1);
+                data.users.splice(userIndex, 1);
 
                 response.writeHead(204, { 'Content-Type': 'application/json' });
                 response.end();

@@ -8,5 +8,5 @@ This is our step-to-step process:
 - [x] 4. Define the logic for the POST method
 - [x] 5. Define the logic for the PUT method
 - [x] 6. Define the logic for the DELETE method
-- [ ] 7. Create a  direcory for our data
+- [x] 7. Create a  direcory for our data
 - [ ] 8. Create the controllers

@@ -1,0 +1,19 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "user_name": "Lola",
+            "user_email": "lola@factoriaf5.org"
+        },
+        {
+            "id": 2,
+            "user_name": "Celia",
+            "user_email": "celia@factoriaf5.org"
+        },
+        {
+            "id": 3,
+            "user_name": "Jorge",
+            "user_email": "jorge@factoriaf5.org"
+        }
+    ]
+}
