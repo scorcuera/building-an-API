@@ -1,0 +1,30 @@
+### Get all users user
+GET http://localhost:3000/users
+
+### Get a single user
+GET http://localhost:3000/users/0b707fbc-614c-11ee-bbad-f66826852c4b
+
+### Create new user
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "name": "gonzalo",
+    "email": "gonzalo@f5.org",
+    "role": "trainer",
+    "password": "012"
+}
+
+### Update user
+PUT http://localhost:3000/users/5579f608-61ae-11ee-bbad-f66826852c4b
+Content-Type: application/json
+
+{
+    "name": "andrea",
+    "email": "andrea@f5.org",
+    "role": "trainer",
+    "password": "1234"
+}
+
+### Delete user
+DELETE http://localhost:3000/users/14848c8e-61b4-11ee-bbad-f66826852c4b

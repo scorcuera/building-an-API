@@ -1,0 +1,19 @@
+### Register new user
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "name": "manuela",
+    "email": "manuela@f5.org",
+    "role": "trainer",
+    "password": "1234"
+}
+
+### Log In new user
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "manuela@f5.org",
+    "password": "12534"
+}
